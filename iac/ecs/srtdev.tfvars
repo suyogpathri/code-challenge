@@ -18,7 +18,9 @@ alb_enable_https2           = true
 alb_target_group_protocol   = "HTTP"
 alb_target_group_type       = "ip"
 
-# ECS Configuration
-container_memory    = 1024
-container_cpu       = 512
-container_port      = 5000
+# ECS Fargate Configuration
+fargate_memory   = 1024
+fargate_cpu      = 512
+app_image        = "docker pull suyogpathri/cc-uat:latest"
+app_port         = 5000
+app_count        = 1

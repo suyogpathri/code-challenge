@@ -18,11 +18,6 @@ variable "private_subnets" {
     description = "The value of the private subnet ids"
 }
 
-variable "iam_role_arn" {
-    type = string
-    description = "The IAM role arn"
-}
-
 variable "fargate_cpu" {
     type = number
     description = "The number of cpu units used by the task."
