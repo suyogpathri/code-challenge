@@ -58,7 +58,7 @@ module "alb_uat" {
     environment = "${var.environment}"
 }
 
-Create a new ECS Cluster, Definiations, Services and Tasks for application
+#Create a new ECS Cluster, Definiations, Services and Tasks for application
 module "ecs_uat" {
     source = "./modules/ecs"
 

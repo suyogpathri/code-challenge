@@ -14,12 +14,6 @@ resource "aws_ecs_cluster" "ecs" {
     }
 }
 
-# ECR Repository Information
-data "aws_ecr_repository" "ecr_repository" {
-    name = var.ecr_repository_name
-}
-
-
 # Container Task Definition Template
 data "template_file" "cd_app" {
   template = file("./templates/ecs/container.json.tpl")
@@ -35,7 +29,7 @@ data "template_file" "cd_app" {
 
 # Create a new task definition for the ECS Cluster
 resource "aws_ecs_task_definition" "app" {
-  family                   = "cb-app-task"
+  family                   = "cc-app-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -45,7 +39,7 @@ resource "aws_ecs_task_definition" "app" {
 }
 
 resource "aws_ecs_service" "main" {
-  name            = "cb-service"
+  name            = "cc-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = var.app_count
@@ -59,7 +53,7 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.app.id
-    container_name   = "cb-app"
+    container_name   = "cc-app"
     container_port   = var.app_port
   }
 
