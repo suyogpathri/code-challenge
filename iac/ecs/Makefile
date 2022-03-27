@@ -19,4 +19,4 @@ validate: init
 	terraform validate
 
 destroy:
-	terraform destroy
+	terraform destroy tf.plan
