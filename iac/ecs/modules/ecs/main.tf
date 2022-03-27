@@ -21,7 +21,7 @@ data "aws_ecr_repository" "ecr_repository" {
 
 
 # Container Task Definition Template
-data "template_file" "cb_app" {
+data "template_file" "cd_app" {
   template = file("./templates/ecs/container.json.tpl")
 
   vars = {
@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "app" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.fargate_cpu
   memory                   = var.fargate_memory
-  container_definitions    = data.template_file.cb_app.rendered
+  container_definitions    = data.template_file.cc_app.rendered
 }
 
 resource "aws_ecs_service" "main" {

@@ -1,6 +1,6 @@
 # Basic Configuration
-name                = "srt-dev-stack"
-environment         = "srt-uat"
+name                = "cc-uat-stack"
+environment         = "cc-uat"
 profile             = "srt-dev"
 
 # VPC Configuration
@@ -8,7 +8,6 @@ availability_zones  = ["us-east-1d", "us-east-1c"]
 cidr                = "172.26.0.0/25"
 private_subnets     = ["172.26.0.32/28", "172.26.0.48/28"]
 public_subnets      = ["172.26.0.0/28", "172.26.0.16/28"]
-database_subnets    = ["172.26.0.64/28", "172.26.0.80/28"]
 
 
 # ALB Configuration
