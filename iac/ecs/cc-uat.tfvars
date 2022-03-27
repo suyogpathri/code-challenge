@@ -19,8 +19,9 @@ alb_target_group_protocol   = "HTTP"
 alb_target_group_type       = "ip"
 
 # ECS Fargate Configuration
-fargate_memory   = 1024
-fargate_cpu      = 512
-app_image        = "docker pull suyogpathri/cc-uat:latest"
-app_port         = 5000
-app_count        = 1
+container_memory        = 1024
+container_cpu           = 512
+app_image               = "suyogpathri/cc-uat:latest"
+container_port          = 5000
+app_count               = 1
+health_check_path       = "/"

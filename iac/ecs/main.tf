@@ -16,7 +16,6 @@ module "vpc_uat" {
 
     public_subnet_cidr = ["172.26.0.0/28", "172.26.0.16/28"]
     private_subnet_cidr = ["172.26.0.32/28", "172.26.0.48/28"]
-    database_subnet_cidr = ["172.26.0.64/28", "172.26.0.80/28"]
     availability_zones = ["us-east-1d", "us-east-1c"]
 
     name = "${var.name}"
@@ -64,12 +63,14 @@ module "ecs_uat" {
 
     vpc_id = module.vpc_uat.vpc_id
     private_subnets = "${module.vpc_uat.private_subnets}"
-    
+    security_groups = "${module.security_groups_uat.ecs_fargate_security_group_id}"
+
     name = "${var.name}"
     environment = "${var.environment}"
-    ecr_repository_name = "test"
-    iam_role_arn = "${data.aws_ssm_parameter.iam_role_arn.value}"
-    container_cpu = 512
-    container_memory = 1024
-
+    app_image = "test"
+    container_cpu = var.container_cpu
+    container_memory = var.container_memory
+    container_port = var.container_port
+    health_check_path = var.health_check_path
+    target_group_arn = "${module.alb_uat.aws_lb_target_group_arn}"
 }

@@ -69,34 +69,12 @@ resource "aws_subnet" "private" {
     }
 }
 
-# Database subnet for VPC
-resource "aws_subnet" "database" {
-    vpc_id = aws_vpc.vpc.id
-    count = length(var.database_subnet_cidr)
-    cidr_block = element(var.database_subnet_cidr, count.index)
-    availability_zone = element(var.availability_zones, count.index)
-    map_public_ip_on_launch = false
-    tags = {
-        Name = "${var.name}-${element(var.availability_zones, count.index)}-database"
-        Environment = var.environment
-    }
-}
-
 # Private subnet Route table
 resource "aws_route_table" "private" {
     vpc_id = aws_vpc.vpc.id
     tags = {
         Name = "${var.name}-private-route-table"
         Environment = var.environment
-    }
-}
-
-# Database subnet Route table
-resource "aws_route_table" "database" {
-    vpc_id = aws_vpc.vpc.id
-    tags = {
-      Name = "${var.name}-database-route-table"
-      Environment = var.environment
     }
 }
 
@@ -123,13 +101,6 @@ resource "aws_route" "private_nat_gateway" {
     nat_gateway_id = aws_nat_gateway.nat.id
 }
 
-# Add route for database route table to NAT gateway
-resource "aws_route" "database_nat_gateway" {
-    route_table_id = aws_route_table.database.id
-    destination_cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat.id
-}
-
 # Associate the public route table with the public subnet
 resource "aws_route_table_association" "public" {
     subnet_id = element(aws_subnet.public.*.id, count.index)
@@ -142,11 +113,4 @@ resource "aws_route_table_association" "private" {
     subnet_id = element(aws_subnet.private.*.id, count.index)
     route_table_id = aws_route_table.private.id
     count = length(var.private_subnet_cidr)
-}
-
-# Associate the database route table tiwht the database subnet
-resource "aws_route_table_association" "database" {
-    subnet_id = element(aws_subnet.database.*.id, count.index)
-    route_table_id = aws_route_table.database.id
-    count = length(var.database_subnet_cidr)
 }

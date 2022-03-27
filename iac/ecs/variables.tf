@@ -27,11 +27,6 @@ variable "cidr" {
     default = "10.0.0.0/16"
 }
 
-variable "database_subnets" {
-    description = "a list of CIDRs for private subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
-    default = ["10.0.0.0/20", "10.0.32.0/20", "10.0.64.0/20"]
-}
-
 variable "private_subnets" {
     description = "a list of CIDRs for private subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
     default = ["10.0.0.0/20", "10.0.32.0/20", "10.0.64.0/20"]
@@ -89,4 +84,14 @@ variable "alb_target_group_protocol" {
 
 variable "alb_target_group_type" {
     description = "The target group type IP/Instance"
+}
+
+variable "app_image" {
+    description = "Docker image to run in the ECS cluster"
+    default     = "suyogpathri/cc-uat:latest"
+}
+
+variable "app_count" {
+    description = "Number of docker containers to run"
+    default     = 1
 }

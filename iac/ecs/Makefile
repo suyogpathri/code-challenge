@@ -5,7 +5,7 @@ init:
 	terraform get
 
 plan: validate
-	terraform plan -var-file="srtdev.tfvars" -out=tf.plan
+	terraform plan -var-file="cc-uat.tfvars" -out=tf.plan
 
 apply: plan
 	terraform apply tf.plan
@@ -19,4 +19,4 @@ validate: init
 	terraform validate
 
 destroy:
-	terraform destroy tf.plan
+	terraform destroy --var-file="cc-uat.tfvars"
