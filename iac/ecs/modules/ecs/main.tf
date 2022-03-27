@@ -49,6 +49,7 @@ data "template_file" "cc_app" {
         fargate_cpu = var.container_cpu
         fargate_memory = var.container_memory
         aws_region = var.region
+        aws_log_group = var.log_group_name
     }
 }
 

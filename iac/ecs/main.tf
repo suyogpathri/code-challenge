@@ -57,6 +57,14 @@ module "alb_uat" {
     environment = "${var.environment}"
 }
 
+# Create a Log group for CloudWatch
+module "logs_uat" {
+    source = "./modules/logs"
+    name = "${var.name}"
+    environment = "${var.environment}"
+    retention_in_days = var.retention_in_days
+}
+
 #Create a new ECS Cluster, Definiations, Services and Tasks for application
 module "ecs_uat" {
     source = "./modules/ecs"
@@ -64,10 +72,11 @@ module "ecs_uat" {
     vpc_id = module.vpc_uat.vpc_id
     private_subnets = "${module.vpc_uat.private_subnets}"
     security_groups = "${module.security_groups_uat.ecs_fargate_security_group_id}"
+    log_group_name = "${module.logs_uat.log_group_name}"
 
     name = "${var.name}"
     environment = "${var.environment}"
-    app_image = "test"
+    app_image = "${var.app_image}"
     container_cpu = var.container_cpu
     container_memory = var.container_memory
     container_port = var.container_port

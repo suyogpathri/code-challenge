@@ -63,3 +63,7 @@ variable "target_group_arn" {
     description = "The ARN of the target group"
     default = ""
 }
+
+variable "log_group_name" {
+    description = "The CloudWatch log group name"
+}
