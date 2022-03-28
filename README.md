@@ -91,3 +91,9 @@ Run below command to destory the container.
   * To apply the SSL certificate in production environment follow belows steps.
   * Redirect HTTP Traffic to HTTPS Listener: In the `/iac/ecs/modules/alb/alb.tf` file, comment the lines from 39 to 48.
   * HTTPS Listener: In the `/iac/ecs/modules/alb/alb.tf` file, uncomment the lines from 51 to 78.
+
+
+## Improvements
+  * Creating a Jenkins file for CI/CD with Github webhook or SCM plugin for automation.
+  * Expose more variables in modules for grannual control of IaC code.
+  * Matrix exposure and adding the monitoring tool container as side car. 
