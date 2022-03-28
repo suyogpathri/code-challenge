@@ -67,3 +67,7 @@ variable "target_group_arn" {
 variable "log_group_name" {
     description = "The CloudWatch log group name"
 }
+
+variable "ecs_task_role_arn" {
+    description = "The ARN of the ECS Task Execution Role"
+}

@@ -44,6 +44,50 @@ Run the below command to test the container and up and running and api is return
   curl -i http://localhost
   ```
 
-## iac directory
+## IaC directory
+The IaC code will create 
+* New VPC containing 2 public subnets and 2 private subnets. 
+* Elastic Container Service will be used for container orchestration.
+* The container will be deployed in private subnets.
+* The Elastic Load Balancer will be used to route traffic to containers.
 
-Men at work.
+The IaC code file structure is as follows.
+
+  * `cc-uat.tfvars`: contains the IaC variables.
+  * `main.tf`: main terraform file.
+  * `Makefile`: contains the terraform commands.
+  * `provider.tf`: contains the Cloud provider information.
+  * `variables.tf`: contains the variables for the terraform.
+  * `version.tf`: contains the version of the terraform and cloud provider.
+  * `modules`: contains the terraform modules.
+    * `alb`: contains the AWS Elastic Load Balancer module.
+    * `dns`: contains the AWS Route 53 module.
+    * `ecs`: contains the AWS ECS module.
+    * `logs`: contains the AWS CloudWatch Logs module.
+    * `roles`: contains the AWS IAM roles module.
+    * `security_groups`: contains the AWS Security Group module.
+    * `vpc`: contains the AWS VPC module.
+    
+Before deploying the IaC code, the following three variables need to be updated in `cc-uat.tfvars` file.
+  * `profile`:  The AWS CLI configuration profile to use.
+  * `region`: The AWS region to use.
+  * `sub_domain`: The sub domain name for the container.
+  * `zone_name`: The DNS zone name for the container.
+  
+Run the below command to deploy container and up and running and api is returning the correct output.
+  ```
+  cd /iac/ecs
+  make plan
+  make apply
+  ```
+
+Run below command to destory the container.
+  ```
+  cd /iac/ecs
+  make destroy
+  ```
+
+## Things to do for Production 
+  * To apply the SSL certificate in production environment follow belows steps.
+  * Redirect HTTP Traffic to HTTPS Listener: In the `/iac/ecs/modules/alb/alb.tf` file, comment the lines from 39 to 48.
+  * HTTPS Listener: In the `/iac/ecs/modules/alb/alb.tf` file, uncomment the lines from 51 to 78.

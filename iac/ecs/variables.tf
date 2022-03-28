@@ -46,10 +46,6 @@ variable "health_check_path" {
     description = "Http path for task health check"
 }
 
-variable "tsl_certificate_ssm" {
-    description = "The ARN of the certificate that the ALB uses for https"
-}
-
 variable "alb_delete_protection" { 
     description = "The ALB delete protection value."
 }
@@ -81,4 +77,18 @@ variable "app_count" {
 variable "retention_in_days" {
     type = number
     description = "The number of days to retain logs."
+}
+
+variable "zone_name" {
+    description = "The route 53 dns zone name"
+    type = string
+}
+
+variable "sub_domain" {
+    description = "The application subdomain. e.g. app.example.com"
+    type = string
+}
+
+variable "tls_cert_arn" {
+  description = "The ARN of the certificate that the ALB uses for https"
 }

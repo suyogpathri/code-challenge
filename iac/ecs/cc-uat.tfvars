@@ -1,7 +1,7 @@
 # Basic Configuration
 name                = "cc-uat-stack"
 environment         = "cc-uat"
-profile             = "srt-dev"
+profile             = "default" # AWS Profile
 region              = "us-east-1"
 
 # VPC Configuration
@@ -12,7 +12,7 @@ public_subnets      = ["172.26.0.0/28", "172.26.0.16/28"]
 
 
 # ALB Configuration
-tsl_certificate_ssm         = "wildcard.test.ielstage.com-ssm"
+tls_cert_arn                = "" # The SSL Certificate ARN
 alb_delete_protection       = false
 alb_internal_configuration  = false
 alb_enable_https2           = true
@@ -29,3 +29,7 @@ app_image               = "suyogpathri/cc-uat:latest"
 container_port          = 80
 app_count               = 1
 health_check_path       = "/"
+
+# Route 53 Configuration
+sub_domain = "www" # The subdomain to be used for the Route 53 record
+zone_name = "example.com" # The zone name to be used for the Route 53 record

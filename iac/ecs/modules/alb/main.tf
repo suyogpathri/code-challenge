@@ -35,6 +35,18 @@ resource "aws_lb_target_group" "tg" {
     }
 }
 
+# Create a HTTP listener to redirect http traffic to https listener
+resource "aws_lb_listener" "http" {
+    load_balancer_arn = "${aws_lb.alb.arn}"
+    port = var.http_port
+    protocol = "HTTP"
+
+    default_action {
+        target_group_arn = "${aws_lb_target_group.tg.arn}"
+        type = "forward"
+    }
+}
+
 # Create a HTTP listener to redirect http traffic to https listener (Redirection Rule for SSL)
 # resource "aws_lb_listener" "http" {
 #     load_balancer_arn = "${aws_lb.alb.arn}"
@@ -50,18 +62,6 @@ resource "aws_lb_target_group" "tg" {
 #         }
 #     }
 # }
-
-# Create a HTTP listener to redirect http traffic to https listener
-resource "aws_lb_listener" "http" {
-    load_balancer_arn = "${aws_lb.alb.arn}"
-    port = var.http_port
-    protocol = "HTTP"
-
-    default_action {
-        target_group_arn = "${aws_lb_target_group.tg.arn}"
-        type = "forward"
-    }
-}
 
 # Create a HTTPS listener for alb and redirect traffic to the target group
 # resource "aws_lb_listener" "https" {

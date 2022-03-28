@@ -1,13 +1,3 @@
-# Parameter from Parameter Store for SSL Certificates
-data "aws_ssm_parameter" "certificate_arn" {
-    name = var.tsl_certificate_ssm
-}
-
-# Parameter from Parameter Store for IAM role
-data "aws_ssm_parameter" "iam_role_arn" {
-    name = "ecs-iam-role-arn-ssm"
-}   
-
 # Create a new VPC
 module "vpc_uat" {
     source = "./modules/vpc"
@@ -43,7 +33,7 @@ module "alb_uat" {
     availability_zones = ["us-east-1d", "us-east-1c"]
     vpc_id = module.vpc_uat.vpc_id
     public_subnets = "${module.vpc_uat.public_subnets}"
-    tls_cert_arn = "${data.aws_ssm_parameter.certificate_arn.value}"
+    tls_cert_arn = "${var.tls_cert_arn}"
     security_group_id = "${module.security_groups_uat.alb_security_group_id}"
     http_port =80
     https_port = 443
@@ -65,6 +55,12 @@ module "logs_uat" {
     retention_in_days = var.retention_in_days
 }
 
+module "role_uat" {
+    source = "./modules/roles"
+    name = "${var.name}"
+    environment = "${var.environment}"
+}
+
 #Create a new ECS Cluster, Definiations, Services and Tasks for application
 module "ecs_uat" {
     source = "./modules/ecs"
@@ -73,6 +69,7 @@ module "ecs_uat" {
     private_subnets = "${module.vpc_uat.private_subnets}"
     security_groups = "${module.security_groups_uat.ecs_fargate_security_group_id}"
     log_group_name = "${module.logs_uat.log_group_name}"
+    ecs_task_role_arn = "${module.role_uat.ecs_task_role_arn}"
 
     name = "${var.name}"
     environment = "${var.environment}"
@@ -82,4 +79,12 @@ module "ecs_uat" {
     container_port = var.container_port
     health_check_path = var.health_check_path
     target_group_arn = "${module.alb_uat.aws_lb_target_group_arn}"
+}
+
+# Create a Route53 record for the ALB
+module "dns_uat" {
+    source = "./modules/dns"
+    lb_dns_name = "${module.alb_uat.aws_lb_dns}"
+    sub_domain = "${var.sub_domain}"
+    zone_name = "${var.zone_name}"
 }
