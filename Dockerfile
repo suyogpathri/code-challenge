@@ -11,10 +11,7 @@ RUN apk -v --no-cache --update add \
         bash \
         make \
         curl \
-        wget \
-        && \
-    update-ca-certificates
-    
+        wget
 
 RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
@@ -28,6 +25,6 @@ RUN pip install -r requirements.txt
 
 COPY /api/. /opt/app
 
-EXPOSE 5000
+EXPOSE 80
 
 CMD ["python3", "app.py"]

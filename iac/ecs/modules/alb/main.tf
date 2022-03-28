@@ -30,10 +30,26 @@ resource "aws_lb_target_group" "tg" {
         interval = "30"
         protocol = "HTTP"
         matcher = "200"
-        timeout = "3"
-        unhealthy_threshold = "2"
+        timeout = "15"
+        unhealthy_threshold = "5"
     }
 }
+
+# Create a HTTP listener to redirect http traffic to https listener (Redirection Rule for SSL)
+# resource "aws_lb_listener" "http" {
+#     load_balancer_arn = "${aws_lb.alb.arn}"
+#     port = var.http_port
+#     protocol = "HTTP"
+
+#     default_action {
+#         type = "redirect"
+#         redirect {
+#             port = var.https_port
+#             protocol = "HTTPS"
+#             status_code = "HTTP_301"
+#         }
+#     }
+# }
 
 # Create a HTTP listener to redirect http traffic to https listener
 resource "aws_lb_listener" "http" {
@@ -42,26 +58,22 @@ resource "aws_lb_listener" "http" {
     protocol = "HTTP"
 
     default_action {
-        type = "redirect"
-        redirect {
-            port = var.https_port
-            protocol = "HTTPS"
-            status_code = "HTTP_301"
-        }
-    }
-}
-
-# Create a HTTPS listener for alb and redirect traffic to the target group
-resource "aws_lb_listener" "https" {
-    load_balancer_arn = "${aws_lb.alb.arn}"
-    port = var.https_port
-    protocol = "HTTPS"
-    ssl_policy = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
-    certificate_arn   = "${var.tls_cert_arn}"
-
-    default_action {
         target_group_arn = "${aws_lb_target_group.tg.arn}"
         type = "forward"
     }
 }
+
+# Create a HTTPS listener for alb and redirect traffic to the target group
+# resource "aws_lb_listener" "https" {
+#     load_balancer_arn = "${aws_lb.alb.arn}"
+#     port = var.https_port
+#     protocol = "HTTPS"
+#     ssl_policy = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+#     certificate_arn   = "${var.tls_cert_arn}"
+
+#     default_action {
+#         target_group_arn = "${aws_lb_target_group.tg.arn}"
+#         type = "forward"
+#     }
+# }
 

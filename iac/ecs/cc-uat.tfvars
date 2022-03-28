@@ -26,6 +26,6 @@ retention_in_days       = 5
 container_memory        = 1024
 container_cpu           = 512
 app_image               = "suyogpathri/cc-uat:latest"
-container_port          = 5000
+container_port          = 80
 app_count               = 1
 health_check_path       = "/"

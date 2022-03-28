@@ -28,14 +28,20 @@ The above command will create a image with tag `cc-uat:latest`
 
 **Step 2**: Run the container.
   ```
-  docker run -dit --rm -p 5000:5000 --name cc-uat cc-uat:latest
+  docker run -dit --rm -p 80:80 --name cc-uat cc-uat:latest
   ```
-The above command will run the container with the port 5000.
+The above command will run the container.
 
-**Step 3**: Test the container
+
+**Step 3**: SSH to container with below command
+  ```
+  docker exec -it cc-uat /bin/sh
+  ```
+
+**Step 4**: Test the container
 Run the below command to test the container and up and running and api is returning the correct output.
   ```
-  curl -i http://localhost:5000/
+  curl -i http://localhost
   ```
 
 ## iac directory

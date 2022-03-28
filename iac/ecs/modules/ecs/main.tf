@@ -23,6 +23,8 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
     role = "${var.name}-ecs-task-execution-role"
     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+
+    depends_on = [aws_iam_role.ecs_task_execution_role]
 }
 
 # Create a ECS Fargate Cluster
